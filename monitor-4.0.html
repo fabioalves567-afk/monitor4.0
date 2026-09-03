@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Monitor 4.0 | Fahrwerk</title>
+<style>
+:root{
+  --vw-blue-dark:#001e50;
+  --vw-blue:#0040c1;
+  --gray:#1a1a2e;
+  --green:#00c853;
+  --yellow:#ffd600;
+  --red:#d50000;
+  --bg:#f2f4f8;
+  --card:#ffffff;
+  --border:#e2e6ee;
+  --text:#1a1a2e;
+  --text-soft:#5b6270;
+  --radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  padding-bottom:70px;
+  -webkit-tap-highlight-color:transparent;
+}
+header.app-header{
+  background:linear-gradient(135deg,var(--vw-blue-dark),var(--vw-blue));
+  color:#fff;
+  padding:16px 18px;
+  border-radius:0 0 var(--radius) var(--radius);
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.app-title{font-size:22px;font-weight:800;letter-spacing:.5px;}
+.app-tag{font-size:12px;opacity:.85;margin-top:2px;}
+.header-meta{text-align:right;font-size:12px;opacity:.9;line-height:1.5;}
+nav.tabs{
+  display:flex;
+  gap:6px;
+  margin:14px 12px 0 12px;
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:6px;
+  border:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+nav.tabs button{
+  flex:1;
+  padding:10px 6px;
+  border:none;
+  background:transparent;
+  border-radius:8px;
+  font-weight:700;
+  font-size:13px;
+  color:var(--text-soft);
+  cursor:pointer;
+}
+nav.tabs button.active{
+  background:var(--vw-blue);
+  color:#fff;
+}
+main{max-width:900px;margin:16px auto;padding:0 12px;}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px;
+  margin-bottom:14px;
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+}
+.hidden{display:none !important;}
+h1,h2,h3{color:var(--vw-blue-dark);}
+h2{font-size:18px;margin-bottom:4px;}
+.subtitle{color:var(--text-soft);font-size:13px;margin-bottom:12px;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:12px 16px;border-radius:10px;border:none;font-weight:700;font-size:14px;
+  cursor:pointer;
+}
+.btn-primary{background:var(--vw-blue);color:#fff;}
+.btn-primary:disabled{background:#a9b6d8;cursor:not-allowed;}
+.btn-outline{background:#fff;border:2px solid var(--vw-blue);color:var(--vw-blue);}
+.btn-green{background:var(--green);color:#fff;}
+.btn-gray{background:#eceff5;color:var(--text);}
+.btn-red{background:var(--red);color:#fff;}
+.btn-block{width:100%;}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;}
+
+/* HOME */
+.home-hero{text-align:center;padding:26px 10px;}
+.home-hero .big-title{font-size:30px;font-weight:900;color:var(--vw-blue-dark);}
+.home-hero .slogan{font-size:14px;color:var(--vw-blue);font-weight:700;margin:6px 0 14px;}
+.home-hero p{color:var(--text-soft);font-size:14px;line-height:1.6;margin-bottom:14px;}
+.purpose-notice{
+  background:#eafaf0;border:1.5px solid var(--green);color:#1a1a2e;
+  font-size:13px;line-height:1.5;padding:12px 16px;border-radius:10px;
+  text-align:left;margin-bottom:16px;
+}
+.home-meta{font-size:13px;color:var(--text-soft);margin-bottom:16px;font-weight:600;}
+
+/* QUESTIONNAIRE */
+.progress-wrap{margin-bottom:14px;}
+.progress-label{font-size:12px;color:var(--text-soft);font-weight:700;margin-bottom:6px;}
+.progress-bar-bg{background:#e6e9f2;border-radius:20px;height:10px;overflow:hidden;}
+.progress-bar-fill{background:var(--green);height:100%;border-radius:20px;transition:width .25s;}
+.question-text{font-size:17px;font-weight:700;margin:14px 0 14px;color:var(--vw-blue-dark);}
+.option-grid{display:grid;grid-template-columns:1fr;gap:10px;}
+.option-grid.cols-2{grid-template-columns:1fr 1fr;}
+.opt-btn{
+  background:#fff;border:2px solid var(--border);border-radius:10px;
+  padding:14px 12px;font-weight:700;font-size:14px;text-align:center;cursor:pointer;color:var(--text);
+}
+.opt-btn.selected{border-color:var(--vw-blue);background:#eaf0ff;color:var(--vw-blue-dark);}
+.opt-btn.other-selected{border-color:var(--yellow);background:#fffbe6;}
+.scale-row{display:flex;gap:8px;}
+.scale-row .opt-btn{flex:1;padding:14px 4px;font-size:13px;}
+textarea, input[type=text], input[type=number], input[type=date], select{
+  width:100%;border:2px solid var(--border);border-radius:10px;padding:12px;
+  font-size:14px;font-family:inherit;color:var(--text);background:#fff;
+}
+textarea{min-height:110px;resize:vertical;}
+.other-field{margin-top:10px;}
+.hint{font-size:12px;color:var(--text-soft);margin-top:6px;}
+.multi-select-hint{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#eaf0ff;border:1.5px solid var(--vw-blue);color:var(--vw-blue-dark);
+  font-weight:800;font-size:13px;padding:8px 14px;border-radius:30px;margin-bottom:4px;
+}
+.nav-buttons{display:flex;justify-content:space-between;gap:10px;margin-top:18px;}
+
+/* THANK YOU */
+.thankyou-icon{font-size:46px;text-align:center;margin-bottom:8px;}
+
+/* DASHBOARD */
+.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+@media(min-width:640px){.kpi-grid{grid-template-columns:repeat(5,1fr);}}
+.kpi-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+.kpi-icon{font-size:20px;}
+.kpi-value{font-size:22px;font-weight:900;color:var(--vw-blue-dark);}
+.kpi-label{font-size:11px;color:var(--text-soft);font-weight:600;margin-top:2px;}
+.rank-row{margin-bottom:10px;}
+.rank-row-top{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:4px;}
+.rank-bar-bg{background:#eef1f7;border-radius:8px;height:14px;overflow:hidden;}
+.rank-bar-fill{background:var(--vw-blue);height:100%;border-radius:8px;}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;color:#fff;}
+.badge-high{background:var(--red);}
+.badge-mid{background:#ff8f00;}
+.badge-low{background:var(--green);}
+.theme-block{border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px;}
+.voice-card{border-left:4px solid var(--vw-blue);background:#f7f9fd;padding:10px 12px;border-radius:6px;margin-bottom:8px;font-size:13px;}
+.voice-tema{font-size:11px;color:var(--vw-blue);font-weight:800;margin-top:4px;}
+.agenda-item{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--border);}
+.agenda-num{background:var(--vw-blue);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
+.insight-item{background:#eef4ff;border-left:4px solid var(--vw-blue);padding:10px 12px;border-radius:6px;margin-bottom:8px;font-size:13px;}
+table.actions-table{width:100%;border-collapse:collapse;font-size:13px;}
+table.actions-table th,table.actions-table td{border-bottom:1px solid var(--border);padding:8px 6px;text-align:left;}
+select.status-select{padding:6px;font-size:12px;width:auto;}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.filter-row select{width:auto;padding:8px 10px;font-size:13px;}
+.small-btn{padding:6px 10px;font-size:12px;border-radius:8px;border:none;font-weight:700;cursor:pointer;}
+.small-btn:disabled{opacity:.35;cursor:not-allowed;}
+.small-btn.move-btn{padding:6px 8px;min-width:32px;}
+
+/* ADMIN */
+.q-admin-item{border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px;}
+.q-admin-head{display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.q-admin-head b{font-size:13px;}
+.opt-chip-list{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;}
+.opt-chip{background:#eef1f7;border-radius:20px;padding:5px 10px;font-size:12px;display:flex;align-items:center;gap:6px;}
+.opt-chip button{border:none;background:transparent;color:var(--red);font-weight:800;cursor:pointer;font-size:13px;}
+
+/* MODAL */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;
+  z-index:100;padding:16px;
+}
+.modal-box{background:#fff;border-radius:14px;max-width:480px;width:100%;max-height:85vh;overflow-y:auto;padding:18px;}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.modal-head h3{font-size:16px;}
+.modal-close{background:transparent;border:none;font-size:20px;cursor:pointer;color:var(--text-soft);}
+.section-title{font-size:12px;font-weight:800;color:var(--text-soft);text-transform:uppercase;margin:14px 0 8px;letter-spacing:.5px;}
+.storage-bar-bg{background:#eef1f7;border-radius:8px;height:10px;overflow:hidden;margin:8px 0;}
+.storage-bar-fill{background:var(--vw-blue);height:100%;}
+
+.toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+  background:var(--gray);color:#fff;padding:10px 18px;border-radius:30px;font-size:13px;font-weight:700;
+  z-index:200;opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.toast.show{opacity:1;}
+
+.bottom-actions{
+  position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);
+  display:flex;gap:8px;padding:8px 10px;z-index:30;
+}
+.bottom-actions button{flex:1;font-size:12px;padding:10px 4px;}
+
+@media print{
+  nav.tabs,.bottom-actions,.no-print{display:none !important;}
+  body{padding:0;}
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-top">
+    <div>
+      <div class="app-title">Monitor 4.0</div>
+      <div class="app-tag">Ouvir. Desenvolver. Aproximar. Evoluir.</div>
+    </div>
+    <div class="header-meta">
+      <div id="hdrShift">2º turno</div>
+      <div id="hdrClock">--:--:--</div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button data-tab="home" class="tab-btn active">🏠 Início</button>
+  <button data-tab="survey" class="tab-btn">📝 Questionário</button>
+  <button data-tab="dashboard" class="tab-btn">📊 Dashboard</button>
+  <button data-tab="admin" class="tab-btn">⚙️ Admin</button>
+</nav>
+
+<main>
+
+  <!-- HOME -->
+  <section id="tab-home">
+    <div class="card home-hero">
+      <div class="big-title">Monitor 4.0</div>
+      <div class="slogan">"Ouvir. Desenvolver. Aproximar. Evoluir."</div>
+      <div class="purpose-notice">🌱 <b>Este não é um canal de reclamações.</b> É um espaço de desenvolvimento pessoal e profissional — pra você indicar o que quer aprender e evoluir como Monitor.</div>
+      <p>Este espaço foi criado para ouvir você.<br><br>
+      Aqui você pode compartilhar o que gostaria de aprender, desenvolver, conhecer melhor e discutir nas próximas conversas com a Supervisão.<br><br>
+      Não existe resposta certa ou errada. O objetivo é entender melhor as necessidades dos Monitores e transformar essas informações em desenvolvimento.</p>
+      <div class="home-meta" id="homeQCount">10 perguntas • aproximadamente 5 minutos</div>
+      <button class="btn btn-primary btn-block" id="btnStart">🚀 COMEÇAR</button>
+    </div>
+    <div class="card">
+      <h2>🎯 Radar de Desenvolvimento dos Monitores</h2>
+      <div class="subtitle">Monitor responde → Monitor 4.0 organiza → Dashboard analisa → Supervisão identifica prioridades → Reunião discute → Ação é definida → Monitor recebe retorno.</div>
+    </div>
+  </section>
+
+  <!-- SURVEY -->
+  <section id="tab-survey" class="hidden">
+    <div class="card" id="surveyCard">
+      <div class="progress-wrap">
+        <div class="progress-label" id="progLabel">Pergunta 1 de 10</div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill" style="width:10%"></div></div>
+      </div>
+      <div id="questionArea"></div>
+      <div class="nav-buttons">
+        <button class="btn btn-gray" id="btnBack">← VOLTAR</button>
+        <button class="btn btn-primary" id="btnNext">PRÓXIMA →</button>
+      </div>
+    </div>
+
+    <div class="card hidden" id="thankyouCard">
+      <div class="thankyou-icon">🎯</div>
+      <h2 style="text-align:center">Obrigado por participar!</h2>
+      <div class="subtitle" style="text-align:center">Sua contribuição foi registrada.</div>
+      <p style="text-align:center;font-style:italic;color:var(--text-soft);margin:10px 0 16px;">"Cada resposta ajuda a construir um time de Monitores mais preparado."</p>
+      <div id="thankyouSummary"></div>
+      <button class="btn btn-outline btn-block" id="btnBackHome" style="margin-top:14px;">Voltar ao início</button>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="tab-dashboard" class="hidden">
+    <div class="card">
+      <h2>📊 Dashboard Monitor 4.0</h2>
+      <div class="subtitle">Visão geral das necessidades e percepções dos Monitores</div>
+      <div class="filter-row">
+        <select id="filterPeriodo">
+          <option value="all">Todos os períodos</option>
+          <option value="7">Últimos 7 dias</option>
+          <option value="30">Últimos 30 dias</option>
+        </select>
+        <select id="filterTema">
+          <option value="all">Todos os temas</option>
+        </select>
+        <button class="small-btn btn-outline" id="btnRefreshDash">🔄 Atualizar dados</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="kpi-grid" id="kpiGrid"></div>
+    </div>
+
+    <div class="card">
+      <h2>🎯 Principais Temas de Desenvolvimento</h2>
+      <div class="subtitle">Pergunta 2 — o que os Monitores querem aprender</div>
+      <div id="rankTemas"></div>
+    </div>
+
+    <div class="card">
+      <h2>📈 Competências a Desenvolver</h2>
+      <div class="subtitle">Pergunta 6 — onde eles querem evoluir</div>
+      <div id="rankCompetencias"></div>
+    </div>
+
+    <div class="card">
+      <h2>💬 Temas para a Próxima Reunião</h2>
+      <div class="subtitle">Análise das respostas abertas (perguntas 5, 8 e 9) — toque em "Outro" pra classificar</div>
+      <div id="meetingThemes"></div>
+    </div>
+
+    <div class="card">
+      <h2>🗣️ Voz dos Monitores</h2>
+      <div id="voiceCards"></div>
+      <button class="btn btn-gray btn-block" id="btnAllAnswers">VER TODAS AS RESPOSTAS</button>
+      <div id="allAnswersArea" class="hidden" style="margin-top:12px;"></div>
+    </div>
+
+    <div class="card">
+      <h2>📝 Pauta Sugerida para a Próxima Reunião</h2>
+      <div id="agendaList"></div>
+      <button class="btn btn-primary btn-block" id="btnGenAgenda" style="margin-top:10px;">📋 GERAR PAUTA</button>
+      <div id="agendaOutput" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="card">
+      <h2>✅ Ações da Supervisão</h2>
+      <div id="actionsIndicators" class="kpi-grid" style="margin-bottom:12px;"></div>
+      <div style="overflow-x:auto;">
+        <table class="actions-table" id="actionsTable"></table>
+      </div>
+      <button class="btn btn-outline btn-block" id="btnAddAction" style="margin-top:10px;">+ Nova ação</button>
+    </div>
+
+    <div class="card">
+      <h2>📢 Devolutiva aos Monitores</h2>
+      <div class="subtitle">"Vocês falaram. Nós ouvimos."</div>
+      <div id="devolutivaArea"></div>
+      <button class="btn btn-outline btn-block" id="btnAddDevolutiva" style="margin-top:10px;">+ Registrar devolutiva</button>
+    </div>
+
+    <div class="card">
+      <h2>💡 Insights do Monitor 4.0</h2>
+      <div id="insightsArea"></div>
+    </div>
+
+    <div class="card no-print">
+      <h2>📥 Exportar</h2>
+      <div class="btn-row">
+        <button class="btn btn-gray" id="btnExportCSV">📥 Exportar CSV/Excel</button>
+        <button class="btn btn-gray" id="btnPrintReport">📄 Gerar Relatório (PDF)</button>
+        <button class="btn btn-green" id="btnWhatsSummary">💬 Enviar resumo WhatsApp</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADMIN -->
+  <section id="tab-admin" class="hidden">
+    <div class="card">
+      <h2>⚙️ Administração</h2>
+      <div class="subtitle">Editar perguntas, alternativas e configurações</div>
+      <div class="section-title">Configuração geral</div>
+      <label class="hint">Total de Monitores do setor (para calcular % de participação)</label>
+      <input type="number" id="cfgTotalMonitores" min="1" style="margin-top:6px;">
+    </div>
+
+    <div class="card">
+      <h2>📋 Banco de Perguntas</h2>
+      <div id="adminQuestionList"></div>
+      <button class="btn btn-primary btn-block" id="btnAddQuestion" style="margin-top:10px;">+ Adicionar pergunta</button>
+    </div>
+
+    <div class="card">
+      <h2>🗂️ Dados</h2>
+      <div class="btn-row">
+        <button class="btn btn-red" id="btnResetAll">🗑️ Apagar todos os dados</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="bottom-actions no-print">
+  <button class="btn-gray small-btn" id="btnOpenBackup">💾 Backup</button>
+  <button class="btn-gray small-btn" id="btnImportJson">🔄 Atualizar</button>
+  <input type="file" id="fileImportJson" accept="application/json" class="hidden">
+</div>
+
+<div id="toast" class="toast"></div>
+
+<!-- BACKUP MODAL (padrão obrigatório) -->
+<div class="modal-overlay hidden" id="backupModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>💾 Backup do HUB</h3>
+      <button class="modal-close" id="closeBackupModal">✕</button>
+    </div>
+
+    <div class="section-title">Armazenamento</div>
+    <div id="storageInfo" style="font-size:13px;color:var(--text-soft);"></div>
+    <div class="storage-bar-bg"><div class="storage-bar-fill" id="storageBarFill" style="width:2%"></div></div>
+    <div id="storageWarning" class="hint hidden" style="color:var(--red);font-weight:700;">⚠️ Nenhum backup recente encontrado. Recomendado exportar agora.</div>
+
+    <div class="section-title">Exportar</div>
+    <div class="btn-row">
+      <button class="btn btn-gray" id="btnExportFile" style="flex:1;">↓ Arquivo .json</button>
+      <button class="btn btn-primary" id="btnExportDevice" style="flex:1;background:#6a1bd1;">📦 Salvar no dispositivo</button>
+    </div>
+
+    <div class="section-title">Restaurar</div>
+    <div class="btn-row">
+      <button class="btn btn-gray" id="btnRestoreFile" style="flex:1;">📁 De arquivo .json</button>
+      <button class="btn btn-gray" id="btnRestoreDevice" style="flex:1;">📦 Do dispositivo</button>
+    </div>
+  </div>
+</div>
+
+<!-- GENERIC MODAL (ações, devolutiva, questões, whatsapp) -->
+<div class="modal-overlay hidden" id="genericModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="genericModalTitle">Título</h3>
+      <button class="modal-close" id="closeGenericModal">✕</button>
+    </div>
+    <div id="genericModalBody"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* =========================================================
+   ESTADO / STORAGE
+========================================================= */
+const STORAGE_KEY = "fahrwerk_monitorplus_v1";
+const DEFAULT_TOTAL_MONITORES = 24;
+
+function defaultQuestions(){
+  return [
+    {
+      id:"q1", order:1, type:"scale", required:true, allowOther:true,
+      text:"Como você avalia seu desenvolvimento como Monitor atualmente?",
+      options:[
+        "1 — Preciso desenvolver bastante",
+        "2 — Tenho muito a desenvolver",
+        "3 — Estou evoluindo",
+        "4 — Estou bem preparado",
+        "5 — Me considero muito preparado"
+      ]
+    },
+    {
+      id:"q2", order:2, type:"multi", required:true, allowOther:true, maxSelections:3,
+      text:"Quais assuntos você gostaria de aprender ou aprofundar para melhorar sua atuação como Monitor?",
+      options:["Liderança","Comunicação","Gestão de conflitos","Gestão de pessoas","Gestão de indicadores","Qualidade","Segurança","Solução de problemas","Ferramentas da qualidade","IA","Digitalização","Processos produtivos","Gestão do tempo","Organização","Tomada de decisão","Desenvolvimento de operadores","Conhecimento técnico","Conhecimento sobre a Volkswagen"]
+    },
+    {
+      id:"q3", order:3, type:"single", required:true, allowOther:true,
+      text:"Qual tipo de desenvolvimento seria mais útil para você?",
+      options:["Treinamento prático","Treinamento teórico","Workshop","Palestra","Conversa com a Supervisão","Troca de experiências entre Monitores","Visita a outros setores","Acompanhamento individual","Estudo de casos reais","Quiz","Material digital","Vídeos curtos"]
+    },
+    {
+      id:"q4", order:4, type:"single", required:true, allowOther:true,
+      text:"Qual formato de comunicação entre Monitores e Supervisão você considera mais eficiente?",
+      options:["Reunião presencial","Conversa individual","Reunião rápida antes do turno","Reunião mensal","Formulário digital","Grupo de comunicação","Aplicativo","Quadro digital","Encontros para troca de experiências"]
+    },
+    {
+      id:"q5", order:5, type:"open", required:true, allowOther:false,
+      text:"O que poderia tornar a comunicação entre Monitores e Supervisão mais próxima, aberta e eficiente?",
+      placeholder:"Conte sua ideia. O que você acredita que poderia melhorar essa comunicação?"
+    },
+    {
+      id:"q7", order:6, type:"single", required:true, allowOther:true,
+      text:"Na sua opinião, qual competência é mais importante para um Monitor do futuro?",
+      options:["Liderança","Comunicação","Conhecimento técnico","Inteligência emocional","Capacidade de ensinar","Tomada de decisão","Tecnologia","Inteligência Artificial","Solução de problemas","Visão de processo","Trabalho em equipe","Gestão de pessoas"]
+    },
+    {
+      id:"q8", order:7, type:"open", required:true, allowOther:false,
+      text:"O que você gostaria de aprender ou conhecer melhor através da experiência da Supervisão?",
+      placeholder:"Existe algum conhecimento, experiência ou assunto que você gostaria que a Supervisão compartilhasse com os Monitores?"
+    },
+    {
+      id:"q9", order:8, type:"open", required:true, allowOther:false,
+      text:"Qual assunto você gostaria de levar para a próxima conversa entre Monitores e Supervisão?",
+      placeholder:"Escreva um tema que você gostaria que fosse discutido na próxima reunião."
+    },
+    {
+      id:"q10", order:9, type:"single", required:true, allowOther:true,
+      text:"Se você pudesse escolher um treinamento para os Monitores, qual seria?",
+      options:["Liderança","Comunicação","Gestão de pessoas","Gestão de conflitos","Qualidade","Segurança","Solução de problemas","IA","Tecnologia","Processos","Indicadores","Desenvolvimento de operadores","Gestão do tempo"]
+    },
+    {
+      id:"q_mtk92z343r38gq", order:10, type:"scale", required:true, allowOther:false,
+      text:"Você sente abertura para apresentar problemas, dúvidas e opiniões?",
+      options:["1","2","3","4","5"]
+    },
+    {
+      id:"q_mtk93u1uu8qffv", order:11, type:"scale", required:true, allowOther:false,
+      text:"Como você avalia a comunicação entre monitores e supervisão?",
+      options:["1","2","3","4","5"]
+    },
+    {
+      id:"q_mtljjh2ef4nymj", order:12, type:"multi", required:true, allowOther:true, maxSelections:3,
+      text:"Qual tecnologia ou conhecimento você gostaria de aprender para se preparar para o futuro?",
+      options:["IA","Sistema volkswagen","Tecnologia de Produção","Ferramentas Digitais","Outros"]
+    },
+    {
+      id:"q_mtljz0bkte1w9t", order:13, type:"open", required:true, allowOther:false,
+      text:"Qual foi o momento mais marcante positivamente da sua trajetória como Monitor, e o que esse momento ensinou a você?",
+      placeholder:"Escreva sua resposta..."
+    },
+    {
+      id:"q_mtlkgqu6aeyqkq", order:14, type:"open", required:true, allowOther:false,
+      text:"Existe alguma função dentro da Volkswagen que você admira e gostaria de exercer um dia? Qual?",
+      placeholder:"Escreva sua resposta..."
+    },
+    {
+      id:"q_mtlkj0tij8m92d", order:15, type:"open", required:true, allowOther:false,
+      text:"Quem são os profissionais que você considera referência e que gostaria de se inspirar? O que admira neles?",
+      placeholder:"Escreva sua resposta..."
+    },
+    {
+      id:"q_mtlklneiwkc73x", order:16, type:"open", required:true, allowOther:false,
+      text:"Se tivesse a oportunidade de participar de um treinamento hoje, qual tema escolheria para ajudar na sua carreira?",
+      placeholder:"Escreva sua resposta..."
+    },
+    {
+      id:"q_mtkcg1tl07kyq8", order:17, type:"open", required:true, allowOther:false,
+      text:"Se você tivesse 5 minutos com a supervisora, o que você gostaria de conversar com ela?",
+      placeholder:"Escreva sua resposta..."
+    }
+  ];
+}
+
+function defaultState(){
+  return {
+    version:1,
+    config:{
+      totalMonitores: DEFAULT_TOTAL_MONITORES,
+      questions: defaultQuestions()
+    },
+    responses:[],   // {id, timestamp, answers:{qid: value|array}, otherTags:{}}
+    actions:[],     // {id, tema, acao, responsavel, prazo, status}
+    devolutivas:[], // {id, tema, oQueSeraFeito, status}
+    themeTags:{},   // map openAnswerId -> tema (classificação manual)
+    lastUpdated:null
+  };
+}
+
+let state = loadState();
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultState();
+    const parsed = JSON.parse(raw);
+    // migração simples / merge com defaults pra garantir campos novos
+    const base = defaultState();
+    return Object.assign(base, parsed, {
+      config: Object.assign(base.config, parsed.config||{}),
+    });
+  }catch(e){
+    console.error("Erro ao carregar estado", e);
+    return defaultState();
+  }
+}
+
+function saveState(){
+  state.lastUpdated = new Date().toISOString();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+/* =========================================================
+   UTIL
+========================================================= */
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+
+function showToast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"), 2200);
+}
+
+function fmtDate(iso){
+  const d = new Date(iso);
+  return d.toLocaleDateString("pt-BR")+" "+d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+}
+
+function within(iso, days){
+  if(days==="all") return true;
+  const d = new Date(iso);
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate()-parseInt(days,10));
+  return d >= cutoff;
+}
+
+/* =========================================================
+   RELÓGIO / TURNO
+========================================================= */
+function tickClock(){
+  const now = new Date();
+  document.getElementById("hdrClock").textContent = now.toLocaleTimeString("pt-BR");
+  const h = now.getHours();
+  let shift = "1º turno";
+  if(h>=15 && h<24) shift = "2º turno";
+  else if(h>=0 && h<6) shift = "2º turno";
+  else if(h>=6 && h<15) shift = "1º turno";
+  document.getElementById("hdrShift").textContent = shift;
+}
+setInterval(tickClock,1000); tickClock();
+
+/* =========================================================
+   NAVEGAÇÃO POR ABA
+========================================================= */
+let activeTab = "home";
+document.querySelectorAll(".tab-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    activeTab = btn.dataset.tab;
+    document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active", b===btn));
+    document.querySelectorAll("main > section").forEach(s=>s.classList.add("hidden"));
+    document.getElementById("tab-"+activeTab).classList.remove("hidden");
+    if(activeTab==="dashboard") renderDashboard();
+    if(activeTab==="admin") renderAdmin();
+    if(activeTab==="home") renderHome();
+    if(activeTab==="survey"){
+      if(!surveyInitialized){
+        startSurvey();
+      } else if(document.getElementById("thankyouCard").classList.contains("hidden")){
+        renderQuestion();
+      }
+    }
+    updateBottomActionsVisibility();
+  });
+});
+
+function goTab(tab){
+  document.querySelector('.tab-btn[data-tab="'+tab+'"]').click();
+}
+
+function updateBottomActionsVisibility(){
+  const bar = document.querySelector(".bottom-actions");
+  const show = (activeTab==="dashboard" || activeTab==="admin");
+  bar.classList.toggle("hidden", !show);
+  document.body.style.paddingBottom = show ? "70px" : "10px";
+}
+
+/* =========================================================
+   HOME
+========================================================= */
+function renderHome(){
+  const qs = state.config.questions;
+  document.getElementById("homeQCount").textContent = qs.length+" perguntas • aproximadamente "+Math.max(3,Math.round(qs.length*0.5))+" minutos";
+}
+document.getElementById("btnStart").addEventListener("click",()=>{
+  startSurvey();
+  goTab("survey");
+});
+document.getElementById("btnBackHome").addEventListener("click",()=>{
+  goTab("home");
+});
+
+/* =========================================================
+   QUESTIONÁRIO
+========================================================= */
+let surveyAnswers = {};   // qid -> value (string) or array
+let surveyOther = {};     // qid -> other text
+let surveyIndex = 0;
+const DRAFT_KEY = "fahrwerk_monitorplus_draft_v1";
+
+let surveyInitialized = false;
+
+function startSurvey(){
+  surveyInitialized = true;
+  document.getElementById("surveyCard").classList.remove("hidden");
+  document.getElementById("thankyouCard").classList.add("hidden");
+  const draft = sessionStorage.getItem(DRAFT_KEY);
+  if(draft){
+    try{
+      const d = JSON.parse(draft);
+      surveyAnswers = d.answers||{};
+      surveyOther = d.other||{};
+      surveyIndex = d.index||0;
+    }catch(e){ surveyAnswers={}; surveyOther={}; surveyIndex=0; }
+  } else {
+    surveyAnswers = {}; surveyOther = {}; surveyIndex = 0;
+  }
+  renderQuestion();
+}
+
+function saveDraft(){
+  sessionStorage.setItem(DRAFT_KEY, JSON.stringify({answers:surveyAnswers, other:surveyOther, index:surveyIndex}));
+}
+
+function currentQuestions(){
+  return state.config.questions.slice().sort((a,b)=>a.order-b.order);
+}
+
+function renderQuestion(){
+  const qs = currentQuestions();
+  const total = qs.length;
+  const q = qs[surveyIndex];
+  document.getElementById("progLabel").textContent = "Pergunta "+(surveyIndex+1)+" de "+total;
+  document.getElementById("progFill").style.width = Math.round(((surveyIndex+1)/total)*100)+"%";
+
+  const area = document.getElementById("questionArea");
+  let html = '<div class="question-text">'+escapeHtml(q.text)+'</div>';
+
+  if(q.type==="scale"){
+    html += '<div class="option-grid" data-qid="'+q.id+'">';
+    q.options.forEach((opt,i)=>{
+      const val = String(i+1);
+      const sel = surveyAnswers[q.id]===val ? " selected":"";
+      html += '<button type="button" class="opt-btn'+sel+'" data-val="'+val+'">'+escapeHtml(opt)+'</button>';
+    });
+    if(q.allowOther){
+      const selOther = surveyAnswers[q.id]==="__other__" ? " other-selected":"";
+      html += '<button type="button" class="opt-btn'+selOther+'" data-val="__other__">✏️ Outra resposta</button>';
+    }
+    html += '</div>';
+    if(surveyAnswers[q.id]==="__other__"){
+      html += otherFieldHtml(q.id);
+    }
+  }
+
+  else if(q.type==="single"){
+    html += '<div class="option-grid" data-qid="'+q.id+'">';
+    q.options.forEach(opt=>{
+      const sel = surveyAnswers[q.id]===opt ? " selected":"";
+      html += '<button type="button" class="opt-btn'+sel+'" data-val="'+escapeAttr(opt)+'">'+escapeHtml(opt)+'</button>';
+    });
+    if(q.allowOther){
+      const selOther = surveyAnswers[q.id]==="__other__" ? " other-selected":"";
+      html += '<button type="button" class="opt-btn'+selOther+'" data-val="__other__">✏️ Outra resposta</button>';
+    }
+    html += '</div>';
+    if(surveyAnswers[q.id]==="__other__"){
+      html += otherFieldHtml(q.id);
+    }
+  }
+
+  else if(q.type==="multi"){
+    const arr = surveyAnswers[q.id]||[];
+    html += '<div class="multi-select-hint">☝️ Selecione até '+q.maxSelections+' opções · '+arr.length+'/'+q.maxSelections+' selecionadas</div>';
+    html += '<div class="option-grid" data-qid="'+q.id+'" style="margin-top:8px;">';
+    q.options.forEach(opt=>{
+      const sel = arr.includes(opt) ? " selected":"";
+      html += '<button type="button" class="opt-btn'+sel+'" data-val="'+escapeAttr(opt)+'">'+escapeHtml(opt)+'</button>';
+    });
+    if(q.allowOther){
+      const selOther = arr.includes("__other__") ? " other-selected":"";
+      html += '<button type="button" class="opt-btn'+selOther+'" data-val="__other__">✏️ Outra resposta</button>';
+    }
+    html += '</div>';
+    if(arr.includes("__other__")){
+      html += otherFieldHtml(q.id);
+    }
+  }
+
+  else if(q.type==="open"){
+    const val = surveyAnswers[q.id]||"";
+    html += '<textarea data-qid="'+q.id+'" placeholder="'+escapeAttr(q.placeholder||"")+'">'+escapeHtml(val)+'</textarea>';
+  }
+
+  area.innerHTML = html;
+  bindQuestionEvents(q);
+
+  document.getElementById("btnBack").disabled = false;
+  document.getElementById("btnBack").style.visibility = surveyIndex===0 ? "hidden":"visible";
+  document.getElementById("btnNext").textContent = (surveyIndex===total-1) ? "FINALIZAR" : "PRÓXIMA →";
+  updateNextEnabled(q);
+}
+
+function otherFieldHtml(qid){
+  const q = currentQuestions().find(x=>x.id===qid);
+  const val = surveyOther[qid]||"";
+  return '<div class="other-field"><textarea data-other-for="'+qid+'" placeholder="Escreva sua outra resposta...">'+escapeHtml(val)+'</textarea></div>';
+}
+
+function bindQuestionEvents(q){
+  const area = document.getElementById("questionArea");
+
+  area.querySelectorAll(".opt-btn").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const val = btn.dataset.val;
+      if(q.type==="scale" || q.type==="single"){
+        surveyAnswers[q.id] = val;
+      } else if(q.type==="multi"){
+        let arr = surveyAnswers[q.id]||[];
+        if(arr.includes(val)){
+          arr = arr.filter(v=>v!==val);
+        } else {
+          if(arr.length>=q.maxSelections){
+            showToast("Máximo de "+q.maxSelections+" opções");
+            return;
+          }
+          arr = arr.concat([val]);
+        }
+        surveyAnswers[q.id] = arr;
+      }
+      saveDraft();
+      renderQuestion();
+    });
+  });
+
+  const openTa = area.querySelector('textarea[data-qid]');
+  if(openTa){
+    openTa.addEventListener("input",()=>{
+      surveyAnswers[q.id] = openTa.value;
+      saveDraft();
+      updateNextEnabled(q);
+    });
+  }
+
+  const otherTa = area.querySelector('textarea[data-other-for]');
+  if(otherTa){
+    otherTa.addEventListener("input",()=>{
+      surveyOther[q.id] = otherTa.value;
+      saveDraft();
+      updateNextEnabled(q);
+    });
+  }
+}
+
+function updateNextEnabled(q){
+  const btn = document.getElementById("btnNext");
+  let ok = true;
+  if(q.required){
+    if(q.type==="open"){
+      ok = (surveyAnswers[q.id]||"").trim().length>0;
+    } else if(q.type==="multi"){
+      const arr = surveyAnswers[q.id]||[];
+      ok = arr.length>0;
+      if(ok && arr.includes("__other__")){
+        ok = (surveyOther[q.id]||"").trim().length>0;
+      }
+    } else { // single/scale
+      const v = surveyAnswers[q.id];
+      ok = !!v;
+      if(ok && v==="__other__"){
+        ok = (surveyOther[q.id]||"").trim().length>0;
+      }
+    }
+  }
+  btn.disabled = !ok;
+}
+
+document.getElementById("btnBack").addEventListener("click",()=>{
+  if(surveyIndex>0){ surveyIndex--; saveDraft(); renderQuestion(); }
+});
+
+document.getElementById("btnNext").addEventListener("click",()=>{
+  const qs = currentQuestions();
+  if(surveyIndex < qs.length-1){
+    surveyIndex++;
+    saveDraft();
+    renderQuestion();
+  } else {
+    finishSurvey();
+  }
+});
+
+function finishSurvey(){
+  const response = {
+    id: uid(),
+    timestamp: new Date().toISOString(),
+    answers: JSON.parse(JSON.stringify(surveyAnswers)),
+    other: JSON.parse(JSON.stringify(surveyOther))
+  };
+  state.responses.push(response);
+  saveState();
+  sessionStorage.removeItem(DRAFT_KEY);
+
+  document.getElementById("surveyCard").classList.add("hidden");
+  document.getElementById("thankyouCard").classList.remove("hidden");
+
+  const qs = currentQuestions();
+  const q2 = qs.find(x=>x.id==="q2");
+  const chosen = (surveyAnswers["q2"]||[]).filter(v=>v!=="__other__");
+  let summary = "";
+  if(chosen.length){
+    summary += '<div class="section-title">Temas que você indicou</div><div class="option-grid">';
+    chosen.forEach(c=> summary += '<div class="opt-btn selected" style="cursor:default;">'+escapeHtml(c)+'</div>');
+    summary += '</div>';
+  }
+  document.getElementById("thankyouSummary").innerHTML = summary;
+  showToast("Resposta registrada!");
+}
+
+/* =========================================================
+   HELPERS DE ESCAPE
+========================================================= */
+function escapeHtml(str){
+  return String(str==null?"":str)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function escapeAttr(str){
+  return escapeHtml(str).replace(/"/g,"&quot;");
+}
+
+/* =========================================================
+   ANÁLISE / DASHBOARD
+========================================================= */
+function filteredResponses(){
+  const period = document.getElementById("filterPeriodo").value;
+  return state.responses.filter(r=>within(r.timestamp, period));
+}
+
+function countMulti(qid){
+  const map = {};
+  filteredResponses().forEach(r=>{
+    const arr = r.answers[qid];
+    if(!Array.isArray(arr)) return;
+    arr.forEach(v=>{
+      let label = v;
+      if(v==="__other__"){
+        label = (r.other && r.other[qid]) ? r.other[qid].trim() : null;
+      }
+      if(!label) return;
+      map[label] = (map[label]||0)+1;
+    });
+  });
+  return Object.entries(map).sort((a,b)=>b[1]-a[1]);
+}
+
+function countSingle(qid){
+  const map = {};
+  filteredResponses().forEach(r=>{
+    let v = r.answers[qid];
+    if(v==null) return;
+    let label = v;
+    if(v==="__other__"){
+      label = (r.other && r.other[qid]) ? r.other[qid].trim() : null;
+    }
+    if(!label) return;
+    map[label] = (map[label]||0)+1;
+  });
+  return Object.entries(map).sort((a,b)=>b[1]-a[1]);
+}
+
+function avgScale(qid){
+  const resp = filteredResponses().map(r=>parseInt(r.answers[qid],10)).filter(v=>!isNaN(v));
+  if(!resp.length) return null;
+  return resp.reduce((a,b)=>a+b,0)/resp.length;
+}
+
+function openAnswers(){
+  // Retorna lista de {respId, qid, texto, tema}
+  const list = [];
+  filteredResponses().forEach(r=>{
+    ["q5","q8","q9"].forEach(qid=>{
+      const txt = (r.answers[qid]||"").trim();
+      if(!txt) return;
+      const key = r.id+"::"+qid;
+      list.push({
+        key, respId:r.id, qid, texto:txt, timestamp:r.timestamp,
+        tema: state.themeTags[key] || null
+      });
+    });
+  });
+  return list.sort((a,b)=> new Date(b.timestamp)-new Date(a.timestamp));
+}
+
+const THEME_OPTIONS = ["Liderança","Comunicação","Pessoas","Qualidade","Segurança","Processos","IA","Tecnologia","Desenvolvimento","Indicadores","Outros"];
+
+function renderKpis(){
+  const total = state.config.totalMonitores || 1;
+  const respCount = state.responses.length;
+  const pct = Math.min(100, Math.round((respCount/total)*100));
+  const topNeed = countMulti("q2")[0];
+  const meetingThemesCount = new Set(openAnswers().map(a=>a.tema).filter(Boolean)).size || estimateThemeCount();
+  const avg = avgScale("q1");
+
+  const kpis = [
+    {icon:"👥", val: respCount+" / "+total, label:"Participação ("+pct+"%)"},
+    {icon:"📊", val: respCount, label:"Respostas recebidas"},
+    {icon:"🎯", val: topNeed ? topNeed[0] : "—", label:"Principal necessidade"},
+    {icon:"💬", val: meetingThemesCount, label:"Temas para reunião"},
+    {icon:"⭐", val: avg!=null ? avg.toFixed(1)+" / 5":"—", label:"Autoavaliação média"}
+  ];
+  document.getElementById("kpiGrid").innerHTML = kpis.map(k=>
+    '<div class="kpi-card"><div class="kpi-icon">'+k.icon+'</div><div class="kpi-value">'+escapeHtml(k.val)+'</div><div class="kpi-label">'+escapeHtml(k.label)+'</div></div>'
+  ).join("");
+}
+
+function estimateThemeCount(){
+  // fallback simples: quantos temas distintos entre as classificadas manualmente ou 0
+  return new Set(openAnswers().map(a=>a.tema).filter(Boolean)).size;
+}
+
+function renderRanking(containerId, entries, colorClass){
+  const max = entries.length ? entries[0][1] : 1;
+  const totalResp = filteredResponses().length || 1;
+  let html = "";
+  entries.slice(0,12).forEach(([label,count],i)=>{
+    const pct = Math.round((count/max)*100);
+    const pctOfResp = Math.round((count/totalResp)*100);
+    html += '<div class="rank-row">'
+      + '<div class="rank-row-top"><span>'+(i+1)+'. '+escapeHtml(label)+'</span><span>'+count+' ('+pctOfResp+'%)</span></div>'
+      + '<div class="rank-bar-bg"><div class="rank-bar-fill" style="width:'+pct+'%"></div></div>'
+      + '</div>';
+  });
+  document.getElementById(containerId).innerHTML = html || '<div class="hint">Sem respostas ainda para este filtro.</div>';
+}
+
+function renderMeetingThemes(){
+  const answers = openAnswers();
+  const grouped = {};
+  answers.forEach(a=>{
+    const t = a.tema || "Não classificado";
+    grouped[t] = (grouped[t]||0)+1;
+  });
+  const sorted = Object.entries(grouped).sort((a,b)=>b[1]-a[1]);
+  const maxCount = sorted.length ? sorted[0][1] : 1;
+
+  let html = "";
+  sorted.forEach(([tema,count])=>{
+    let badge = "badge-low", label="INTERESSE";
+    const ratio = count/maxCount;
+    if(ratio>=0.66){ badge="badge-high"; label="PRIORIDADE ALTA"; }
+    else if(ratio>=0.33){ badge="badge-mid"; label="PRIORIDADE MÉDIA"; }
+    html += '<div class="theme-block"><span class="badge '+badge+'">'+label+'</span>'
+      + '<div style="font-weight:800;margin-top:6px;">'+escapeHtml(tema)+'</div>'
+      + '<div class="hint">'+count+' menções</div></div>';
+  });
+  document.getElementById("meetingThemes").innerHTML = html || '<div class="hint">Nenhuma resposta aberta ainda.</div>';
+}
+
+function renderVoiceCards(){
+  const answers = openAnswers().slice(0,6);
+  let html = answers.map(a=>
+    '<div class="voice-card">"'+escapeHtml(a.texto)+'"<div class="voice-tema">Tema: '+escapeHtml(a.tema||"não classificado")+'</div></div>'
+  ).join("");
+  document.getElementById("voiceCards").innerHTML = html || '<div class="hint">Nenhuma resposta ainda.</div>';
+}
+
+document.getElementById("btnAllAnswers").addEventListener("click",()=>{
+  const el = document.getElementById("allAnswersArea");
+  el.classList.toggle("hidden");
+  if(!el.classList.contains("hidden")){
+    const answers = openAnswers();
+    let html = '<table class="actions-table"><tr><th>Data</th><th>Pergunta</th><th>Resposta</th><th>Tema</th></tr>';
+    answers.forEach(a=>{
+      const qLabel = a.qid==="q5"?"Comunicação (P5)": a.qid==="q8"?"Experiência Supervisão (P8)":"Pauta reunião (P9)";
+      html += '<tr><td>'+fmtDate(a.timestamp)+'</td><td>'+qLabel+'</td><td>'+escapeHtml(a.texto)+'</td>'
+        + '<td><select data-tag-key="'+a.key+'" class="status-select">'
+        + '<option value="">—</option>'
+        + THEME_OPTIONS.map(t=>'<option value="'+t+'"'+(a.tema===t?" selected":"")+'>'+t+'</option>').join("")
+        + '</select></td></tr>';
+    });
+    html += "</table>";
+    el.innerHTML = html;
+    el.querySelectorAll("select[data-tag-key]").forEach(sel=>{
+      sel.addEventListener("change",()=>{
+        const key = sel.dataset.tagKey;
+        if(sel.value){ state.themeTags[key] = sel.value; }
+        else { delete state.themeTags[key]; }
+        saveState();
+        renderDashboard();
+        document.getElementById("allAnswersArea").classList.remove("hidden");
+      });
+    });
+  }
+});
+
+function renderAgendaPreview(){
+  const topTemas = countMulti("q2").slice(0,5);
+  let html = topTemas.map(([label,count],i)=>
+    '<div class="agenda-item"><div class="agenda-num">'+(i+1)+'</div><div><b>'+escapeHtml(label)+'</b><div class="hint">'+count+' manifestações</div></div></div>'
+  ).join("");
+  document.getElementById("agendaList").innerHTML = html || '<div class="hint">Sem dados suficientes ainda.</div>';
+}
+
+document.getElementById("btnGenAgenda").addEventListener("click",()=>{
+  const topTemas = countMulti("q2").slice(0,4).map(x=>x[0]);
+  const meetingThemes = Object.entries(
+    openAnswers().reduce((acc,a)=>{const t=a.tema||"Temas a classificar"; acc[t]=(acc[t]||0)+1; return acc;},{})
+  ).sort((a,b)=>b[1]-a[1]).slice(0,4).map(x=>x[0]);
+
+  const items = Array.from(new Set([...topTemas, ...meetingThemes])).slice(0,6);
+  let txt = "📝 PAUTA SUGERIDA — Reunião Monitores x Supervisão\n\n";
+  items.forEach((it,i)=> txt += (i+1)+". "+it+"\n");
+  txt += "\nGerado automaticamente pelo Monitor 4.0 em "+new Date().toLocaleDateString("pt-BR");
+
+  document.getElementById("agendaOutput").innerHTML = '<textarea readonly style="min-height:160px;">'+escapeHtml(txt)+'</textarea>';
+  showToast("Pauta gerada");
+});
+
+/* AÇÕES */
+function renderActions(){
+  const actions = state.actions;
+  const counts = {"Concluído":0,"Em andamento":0,"Pendente":0};
+  actions.forEach(a=> counts[a.status] = (counts[a.status]||0)+1 );
+  document.getElementById("actionsIndicators").innerHTML = [
+    {icon:"🟢",val:counts["Concluído"],label:"Concluídas"},
+    {icon:"🟡",val:counts["Em andamento"],label:"Em andamento"},
+    {icon:"🔴",val:counts["Pendente"],label:"Pendentes"},
+  ].map(k=>'<div class="kpi-card"><div class="kpi-icon">'+k.icon+'</div><div class="kpi-value">'+k.val+'</div><div class="kpi-label">'+k.label+'</div></div>').join("");
+
+  let html = '<tr><th>Tema</th><th>Ação</th><th>Responsável</th><th>Prazo</th><th>Status</th><th></th></tr>';
+  actions.forEach(a=>{
+    html += '<tr>'
+      + '<td>'+escapeHtml(a.tema)+'</td>'
+      + '<td>'+escapeHtml(a.acao)+'</td>'
+      + '<td>'+escapeHtml(a.responsavel)+'</td>'
+      + '<td>'+escapeHtml(a.prazo)+'</td>'
+      + '<td><select class="status-select" data-action-id="'+a.id+'">'
+        + ['Pendente','Em andamento','Concluído'].map(s=>'<option'+(a.status===s?" selected":"")+'>'+s+'</option>').join("")
+      + '</select></td>'
+      + '<td><button class="small-btn btn-red" data-del-action="'+a.id+'">✕</button></td>'
+      + '</tr>';
+  });
+  document.getElementById("actionsTable").innerHTML = html;
+
+  document.querySelectorAll('select[data-action-id]').forEach(sel=>{
+    sel.addEventListener("change",()=>{
+      const a = state.actions.find(x=>x.id===sel.dataset.actionId);
+      if(a){ a.status = sel.value; saveState(); renderActions(); }
+    });
+  });
+  document.querySelectorAll('[data-del-action]').forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      state.actions = state.actions.filter(x=>x.id!==btn.dataset.delAction);
+      saveState(); renderActions();
+    });
+  });
+}
+
+document.getElementById("btnAddAction").addEventListener("click",()=>{
+  openGenericModal("Nova ação", `
+    <label class="hint">Tema</label>
+    <input type="text" id="fldTema" style="margin-bottom:10px;">
+    <label class="hint">Ação</label>
+    <textarea id="fldAcao" style="margin-bottom:10px;"></textarea>
+    <label class="hint">Responsável</label>
+    <input type="text" id="fldResp" style="margin-bottom:10px;">
+    <label class="hint">Prazo</label>
+    <input type="date" id="fldPrazo" style="margin-bottom:14px;">
+    <button class="btn btn-primary btn-block" id="fldSave">Salvar ação</button>
+  `);
+  document.getElementById("fldSave").addEventListener("click",()=>{
+    const tema = document.getElementById("fldTema").value.trim();
+    const acao = document.getElementById("fldAcao").value.trim();
+    if(!tema || !acao){ showToast("Preencha tema e ação"); return; }
+    state.actions.push({
+      id:uid(), tema, acao,
+      responsavel: document.getElementById("fldResp").value.trim(),
+      prazo: document.getElementById("fldPrazo").value,
+      status:"Pendente"
+    });
+    saveState();
+    closeGenericModal();
+    renderActions();
+    showToast("Ação criada");
+  });
+});
+
+/* DEVOLUTIVA */
+function renderDevolutivas(){
+  let html = state.devolutivas.map(d=>
+    '<div class="theme-block"><div class="section-title" style="margin-top:0;">Tema mais solicitado</div><b>'+escapeHtml(d.tema)+'</b>'
+    + '<div class="section-title">O que será feito</div>'+escapeHtml(d.oQueSeraFeito)
+    + '<div style="margin-top:8px;"><span class="badge '+(d.status==="Concluído"?"badge-low":d.status==="Em andamento"?"badge-mid":"badge-high")+'">'+d.status+'</span></div></div>'
+  ).join("");
+  document.getElementById("devolutivaArea").innerHTML = html || '<div class="hint">Nenhuma devolutiva registrada ainda.</div>';
+}
+
+document.getElementById("btnAddDevolutiva").addEventListener("click",()=>{
+  openGenericModal("Nova devolutiva", `
+    <label class="hint">Tema</label>
+    <input type="text" id="fldDevTema" style="margin-bottom:10px;">
+    <label class="hint">O que será feito</label>
+    <textarea id="fldDevAcao" style="margin-bottom:10px;"></textarea>
+    <label class="hint">Status</label>
+    <select id="fldDevStatus" style="margin-bottom:14px;">
+      <option>Pendente</option><option>Em andamento</option><option>Concluído</option>
+    </select>
+    <button class="btn btn-primary btn-block" id="fldDevSave">Salvar devolutiva</button>
+  `);
+  document.getElementById("fldDevSave").addEventListener("click",()=>{
+    const tema = document.getElementById("fldDevTema").value.trim();
+    if(!tema){ showToast("Informe o tema"); return; }
+    state.devolutivas.push({
+      id:uid(), tema,
+      oQueSeraFeito: document.getElementById("fldDevAcao").value.trim(),
+      status: document.getElementById("fldDevStatus").value
+    });
+    saveState();
+    closeGenericModal();
+    renderDevolutivas();
+    showToast("Devolutiva registrada");
+  });
+});
+
+/* INSIGHTS AUTOMÁTICOS (regras simples sobre dados reais) */
+function renderInsights(){
+  const insights = [];
+  const topTema = countMulti("q2")[0];
+  if(topTema) insights.push('"'+topTema[0]+'" é atualmente a principal necessidade de desenvolvimento apontada pelos Monitores ('+topTema[1]+' menções).');
+
+  const commTheme = openAnswers().filter(a=>a.qid==="q5").length;
+  if(commTheme>0) insights.push("Existem "+commTheme+" manifestações sobre comunicação entre Monitores e Supervisão — vale revisar o formato dos encontros.");
+
+  const iaMentions = countMulti("q2").find(x=>x[0].toLowerCase().includes("ia")) || countMulti("q6").find(x=>x[0].toLowerCase().includes("intelig"));
+  if(iaMentions) insights.push("Inteligência Artificial / tecnologia aparece como tema emergente entre os interesses dos Monitores.");
+
+  const trainingType = countSingle("q3")[0];
+  if(trainingType) insights.push("A maioria dos Monitores prefere o formato \""+trainingType[0]+"\" para desenvolvimento.");
+
+  const totalResp = filteredResponses().length;
+  const total = state.config.totalMonitores || 1;
+  if(totalResp < total){
+    insights.push("Ainda faltam "+(total-totalResp)+" Monitores responderem à pesquisa — considere reforçar o convite.");
+  }
+
+  document.getElementById("insightsArea").innerHTML = insights.length
+    ? insights.map(i=>'<div class="insight-item">💡 '+escapeHtml(i)+'</div>').join("")
+    : '<div class="hint">Aguardando mais respostas para gerar insights.</div>';
+}
+
+/* FILTRO TEMA select populate */
+function populateThemeFilter(){
+  const sel = document.getElementById("filterTema");
+  const current = sel.value;
+  sel.innerHTML = '<option value="all">Todos os temas</option>' + THEME_OPTIONS.map(t=>'<option value="'+t+'">'+t+'</option>').join("");
+  sel.value = current || "all";
+}
+
+function renderDashboard(){
+  populateThemeFilter();
+  renderKpis();
+  renderRanking("rankTemas", countMulti("q2"));
+  renderRanking("rankCompetencias", countMulti("q6"));
+  renderMeetingThemes();
+  renderVoiceCards();
+  renderAgendaPreview();
+  renderActions();
+  renderDevolutivas();
+  renderInsights();
+}
+
+document.getElementById("filterPeriodo").addEventListener("change", renderDashboard);
+document.getElementById("filterTema").addEventListener("change", renderDashboard);
+document.getElementById("btnRefreshDash").addEventListener("click",()=>{ renderDashboard(); showToast("Dashboard atualizado"); });
+
+/* EXPORTS */
+document.getElementById("btnExportCSV").addEventListener("click",()=>{
+  const qs = currentQuestions();
+  const headers = ["data", ...qs.map(q=>q.id)];
+  const rows = [headers.join(";")];
+  state.responses.forEach(r=>{
+    const row = [fmtDate(r.timestamp)];
+    qs.forEach(q=>{
+      let v = r.answers[q.id];
+      if(Array.isArray(v)){
+        v = v.map(x=> x==="__other__" ? (r.other[q.id]||"Outro") : x).join(", ");
+      } else if(v==="__other__"){
+        v = r.other[q.id]||"Outro";
+      }
+      row.push('"'+String(v==null?"":v).replace(/"/g,'""')+'"');
+    });
+    rows.push(row.join(";"));
+  });
+  const blob = new Blob(["\ufeff"+rows.join("\n")], {type:"text/csv;charset=utf-8;"});
+  triggerDownload(blob, "monitorplus_respostas_"+dateStamp()+".csv");
+  showToast("CSV exportado");
+});
+
+document.getElementById("btnPrintReport").addEventListener("click",()=>{
+  window.print();
+});
+
+document.getElementById("btnWhatsSummary").addEventListener("click",()=>{
+  const total = state.config.totalMonitores||1;
+  const respCount = filteredResponses().length;
+  const topTema = countMulti("q2")[0];
+  const topComp = countMulti("q6")[0];
+  let txt = "📊 *Monitor 4.0 — Resumo*\n\n";
+  txt += "👥 Participação: "+respCount+"/"+total+" ("+Math.round((respCount/total)*100)+"%)\n";
+  if(topTema) txt += "🎯 Principal necessidade: "+topTema[0]+"\n";
+  if(topComp) txt += "📈 Competência mais buscada: "+topComp[0]+"\n";
+  txt += "\nGerado pelo Monitor 4.0 em "+new Date().toLocaleDateString("pt-BR");
+  openGenericModal("💬 Enviar resumo por WhatsApp", `
+    <textarea id="waPreview" style="min-height:180px;">${escapeHtml(txt)}</textarea>
+    <div class="hint" style="margin:8px 0 14px;">Revise antes de enviar.</div>
+    <button class="btn btn-green btn-block" id="waSendBtn">Abrir no WhatsApp</button>
+  `);
+  document.getElementById("waSendBtn").addEventListener("click",()=>{
+    const finalTxt = document.getElementById("waPreview").value;
+    window.open("https://wa.me/?text="+encodeURIComponent(finalTxt), "_blank");
+  });
+});
+
+function triggerDownload(blob, filename){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+function dateStamp(){
+  const d = new Date();
+  return d.getFullYear()+""+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")+"_"+String(d.getHours()).padStart(2,"0")+String(d.getMinutes()).padStart(2,"0");
+}
+
+/* =========================================================
+   ADMIN
+========================================================= */
+function moveQuestion(qid, direction){
+  const qs = currentQuestions(); // já ordenada
+  const idx = qs.findIndex(q=>q.id===qid);
+  const targetIdx = idx + direction;
+  if(idx<0 || targetIdx<0 || targetIdx>=qs.length) return;
+  const a = qs[idx], b = qs[targetIdx];
+  const tmp = a.order;
+  a.order = b.order;
+  b.order = tmp;
+  saveState();
+  renderAdmin();
+  renderHome();
+}
+
+function renderAdmin(){
+  document.getElementById("cfgTotalMonitores").value = state.config.totalMonitores;
+  const list = document.getElementById("adminQuestionList");
+  const qs = currentQuestions();
+  list.innerHTML = qs.map((q,idx)=>{
+    let optsHtml = "";
+    if(q.type!=="open"){
+      optsHtml = '<div class="opt-chip-list">' + q.options.map((o,i)=>
+        '<div class="opt-chip">'+escapeHtml(o)+'<button data-rm-opt="'+q.id+'::'+i+'">✕</button></div>'
+      ).join("") + '</div>'
+      + '<div class="btn-row"><input type="text" placeholder="Nova alternativa" id="newOpt_'+q.id+'" style="flex:1;">'
+      + '<button class="small-btn btn-outline" data-add-opt="'+q.id+'">Adicionar</button></div>';
+    }
+    return '<div class="q-admin-item">'
+      + '<div class="q-admin-head"><b>P'+q.order+'. '+escapeHtml(q.text)+'</b>'
+      + '<div class="btn-row" style="flex-wrap:wrap;justify-content:flex-end;">'
+      + '<button class="small-btn btn-gray move-btn" data-move-up="'+q.id+'"'+(idx===0?" disabled":"")+' title="Mover para cima">▲</button>'
+      + '<button class="small-btn btn-gray move-btn" data-move-down="'+q.id+'"'+(idx===qs.length-1?" disabled":"")+' title="Mover para baixo">▼</button>'
+      + '<button class="small-btn btn-outline" data-edit-q="'+q.id+'">✏️ Editar</button>'
+      + '<button class="small-btn btn-red" data-del-q="'+q.id+'">Excluir</button>'
+      + '</div></div>'
+      + '<div class="hint">Tipo: '+q.type+' • Obrigatória: '+(q.required?"sim":"não")+' • Outra resposta: '+(q.allowOther?"ativada":"desativada")+(q.type==="multi"?(' • Máx. seleções: '+q.maxSelections):"")+'</div>'
+      + optsHtml
+      + '<div class="btn-row" style="margin-top:8px;">'
+      + '<button class="small-btn btn-gray" data-toggle-other="'+q.id+'">Alternar "Outra resposta"</button>'
+      + '<button class="small-btn btn-gray" data-toggle-req="'+q.id+'">Alternar obrigatoriedade</button>'
+      + '</div>'
+      + '</div>';
+  }).join("");
+
+  list.querySelectorAll('[data-move-up]').forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      moveQuestion(btn.dataset.moveUp, -1);
+    });
+  });
+  list.querySelectorAll('[data-move-down]').forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      moveQuestion(btn.dataset.moveDown, 1);
+    });
+  });
+
+  list.querySelectorAll('[data-add-opt]').forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const qid = btn.dataset.addOpt;
+      const input = document.getElementById("newOpt_"+qid);
+      const val = input.value.trim();
+      if(!val) return;
+      const q = state.config.questions.find(x=>x.id===qid);
+      q.options.push(val);
+      saveState(); renderAdmin(); showToast("Alternativa adicionada");
+    });
+  });
+  list.querySelectorAll('[data-rm-opt]').forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const [qid, idx] = btn.dataset.rmOpt.split("::");
+      const q = state.config.questions.find(x=>x.id===qid);
+      q.options.splice(parseInt(idx,10),1);
+      saveState(); renderAdmin(); showToast("Alternativa removida");
+    });
+  });
+  list.querySelectorAll('[data-edit-q]').forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const q = state.config.questions.find(x=>x.id===btn.dataset.editQ);
+
+      function extraFieldsHtml(type){
+        if(type==="multi"){
+          return '<label class="hint">Máximo de seleções</label>'
+            + '<input type="number" id="editQMax" min="1" max="20" value="'+(q.maxSelections||3)+'" style="margin-bottom:14px;">'
+            + '<div class="hint" id="editQOptWarn"></div>';
+        }
+        if(type==="open"){
+          return '<label class="hint">Texto de exemplo (placeholder)</label>'
+            + '<textarea id="editQPlaceholder" style="margin-bottom:14px;">'+escapeHtml(q.placeholder||"")+'</textarea>';
+        }
+        if(type==="single"){
+          return '<div class="hint" id="editQOptWarn" style="margin-bottom:14px;"></div>';
+        }
+        if(type==="scale"){
+          return '<div class="hint" style="margin-bottom:14px;">Ao salvar como Escala 1-5, as alternativas serão redefinidas para os 5 rótulos padrão de escala (edite-os depois na lista de alternativas, se quiser).</div>';
+        }
+        return "";
+      }
+
+      openGenericModal("Editar pergunta P"+q.order, `
+        <label class="hint">Texto da pergunta</label>
+        <textarea id="editQText" style="margin-bottom:14px;">${escapeHtml(q.text)}</textarea>
+        <label class="hint">Tipo</label>
+        <select id="editQType" style="margin-bottom:14px;">
+          <option value="single">Escolha única</option>
+          <option value="multi">Múltipla escolha</option>
+          <option value="scale">Escala 1-5</option>
+          <option value="open">Resposta aberta</option>
+        </select>
+        <div id="editQExtra">${extraFieldsHtml(q.type)}</div>
+        <button class="btn btn-primary btn-block" id="editQSave">Salvar alterações</button>
+      `);
+
+      const typeSel = document.getElementById("editQType");
+      typeSel.value = q.type;
+
+      function refreshExtra(){
+        document.getElementById("editQExtra").innerHTML = extraFieldsHtml(typeSel.value);
+        const warn = document.getElementById("editQOptWarn");
+        if(warn && (q.type==="open" || q.type==="scale") && typeSel.value!==q.type){
+          warn.textContent = "Esta pergunta ainda não tem alternativas próprias de "+(typeSel.value==="multi"?"múltipla escolha":"escolha única")+" — salve e depois adicione as alternativas na lista abaixo.";
+        }
+      }
+      typeSel.addEventListener("change", refreshExtra);
+
+      document.getElementById("editQSave").addEventListener("click",()=>{
+        const newText = document.getElementById("editQText").value.trim();
+        if(!newText){ showToast("O texto da pergunta não pode ficar vazio"); return; }
+        q.text = newText;
+
+        const newType = typeSel.value;
+        const typeChanged = newType !== q.type;
+
+        if(typeChanged){
+          if(newType==="scale"){
+            q.options = [
+              "1 — Preciso desenvolver bastante",
+              "2 — Tenho muito a desenvolver",
+              "3 — Estou evoluindo",
+              "4 — Estou bem preparado",
+              "5 — Me considero muito preparado"
+            ];
+            delete q.maxSelections;
+            q.placeholder = undefined; delete q.placeholder;
+          } else if(newType==="open"){
+            delete q.maxSelections;
+            delete q.options;
+            q.allowOther = false;
+          } else if(newType==="single"){
+            if(!Array.isArray(q.options)) q.options = [];
+            delete q.maxSelections;
+            delete q.placeholder;
+          } else if(newType==="multi"){
+            if(!Array.isArray(q.options)) q.options = [];
+            delete q.placeholder;
+          }
+          q.type = newType;
+        }
+
+        if(q.type==="multi"){
+          const maxEl = document.getElementById("editQMax");
+          if(maxEl){
+            const v = parseInt(maxEl.value,10);
+            if(!isNaN(v) && v>0) q.maxSelections = v;
+          }
+        }
+        if(q.type==="open"){
+          const placeEl = document.getElementById("editQPlaceholder");
+          if(placeEl) q.placeholder = placeEl.value.trim();
+        }
+
+        saveState();
+        closeGenericModal();
+        renderAdmin();
+        renderHome();
+        showToast("Pergunta atualizada");
+      });
+    });
+  });
+  list.querySelectorAll('[data-toggle-other]').forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const q = state.config.questions.find(x=>x.id===btn.dataset.toggleOther);
+      q.allowOther = !q.allowOther;
+      saveState(); renderAdmin();
+    });
+  });
+  list.querySelectorAll('[data-toggle-req]').forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const q = state.config.questions.find(x=>x.id===btn.dataset.toggleReq);
+      q.required = !q.required;
+      saveState(); renderAdmin();
+    });
+  });
+  list.querySelectorAll('[data-del-q]').forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      if(!confirm("Excluir esta pergunta? Respostas já registradas não serão apagadas.")) return;
+      state.config.questions = state.config.questions.filter(x=>x.id!==btn.dataset.delQ);
+      // reordenar
+      state.config.questions.sort((a,b)=>a.order-b.order).forEach((q,i)=>q.order=i+1);
+      saveState(); renderAdmin(); renderHome();
+    });
+  });
+}
+
+document.getElementById("cfgTotalMonitores").addEventListener("change",(e)=>{
+  const v = parseInt(e.target.value,10);
+  if(!isNaN(v) && v>0){ state.config.totalMonitores = v; saveState(); showToast("Configuração salva"); }
+});
+
+document.getElementById("btnAddQuestion").addEventListener("click",()=>{
+  openGenericModal("Nova pergunta", `
+    <label class="hint">Texto da pergunta</label>
+    <textarea id="newQText" style="margin-bottom:10px;"></textarea>
+    <label class="hint">Tipo</label>
+    <select id="newQType" style="margin-bottom:10px;">
+      <option value="single">Escolha única</option>
+      <option value="multi">Múltipla escolha (até 3)</option>
+      <option value="scale">Escala 1-5</option>
+      <option value="open">Resposta aberta</option>
+    </select>
+    <label class="hint">Alternativas (uma por linha, se aplicável)</label>
+    <textarea id="newQOpts" style="margin-bottom:14px;" placeholder="Uma opção por linha"></textarea>
+    <button class="btn btn-primary btn-block" id="newQSave">Adicionar pergunta</button>
+  `);
+  document.getElementById("newQSave").addEventListener("click",()=>{
+    const text = document.getElementById("newQText").value.trim();
+    const type = document.getElementById("newQType").value;
+    if(!text){ showToast("Informe o texto da pergunta"); return; }
+    const optsRaw = document.getElementById("newQOpts").value.split("\n").map(s=>s.trim()).filter(Boolean);
+    const q = {
+      id:"q_"+uid(), order: state.config.questions.length+1, type, required:true, allowOther:true,
+      text
+    };
+    if(type==="multi"){ q.maxSelections=3; q.options=optsRaw; }
+    else if(type==="single"){ q.options=optsRaw; }
+    else if(type==="scale"){ q.options=["1","2","3","4","5"]; q.allowOther=false; }
+    else if(type==="open"){ q.allowOther=false; q.placeholder="Escreva sua resposta..."; }
+    state.config.questions.push(q);
+    saveState(); closeGenericModal(); renderAdmin(); renderHome();
+    showToast("Pergunta adicionada");
+  });
+});
+
+document.getElementById("btnResetAll").addEventListener("click",()=>{
+  if(!confirm("Isso vai apagar TODAS as respostas, ações e devolutivas salvas neste dispositivo. Continuar?")) return;
+  state = defaultState();
+  saveState();
+  renderHome(); renderDashboard(); renderAdmin();
+  showToast("Dados apagados");
+});
+
+/* =========================================================
+   MODAL GENÉRICO
+========================================================= */
+function openGenericModal(title, bodyHtml){
+  document.getElementById("genericModalTitle").textContent = title;
+  document.getElementById("genericModalBody").innerHTML = bodyHtml;
+  document.getElementById("genericModal").classList.remove("hidden");
+}
+function closeGenericModal(){
+  document.getElementById("genericModal").classList.add("hidden");
+}
+document.getElementById("closeGenericModal").addEventListener("click", closeGenericModal);
+document.getElementById("genericModal").addEventListener("click",(e)=>{
+  if(e.target.id==="genericModal") closeGenericModal();
+});
+
+/* =========================================================
+   BACKUP MODAL
+========================================================= */
+function openBackupModal(){
+  const raw = localStorage.getItem(STORAGE_KEY) || "";
+  const bytes = new Blob([raw]).size;
+  const kb = (bytes/1024).toFixed(1);
+  document.getElementById("storageInfo").textContent = "Uso local: "+kb+" KB • Última atualização: "+(state.lastUpdated ? fmtDate(state.lastUpdated) : "nunca");
+  const pct = Math.min(100, Math.round((bytes/ (5*1024*1024)) * 100 * 20)); // barra apenas ilustrativa
+  document.getElementById("storageBarFill").style.width = Math.max(2,pct)+"%";
+  document.getElementById("storageWarning").classList.toggle("hidden", !!state.lastUpdated);
+  document.getElementById("backupModal").classList.remove("hidden");
+}
+document.getElementById("btnOpenBackup").addEventListener("click", openBackupModal);
+document.getElementById("closeBackupModal").addEventListener("click",()=>{
+  document.getElementById("backupModal").classList.add("hidden");
+});
+document.getElementById("backupModal").addEventListener("click",(e)=>{
+  if(e.target.id==="backupModal") document.getElementById("backupModal").classList.add("hidden");
+});
+
+function exportStateBlob(){
+  return new Blob([JSON.stringify(state,null,2)], {type:"application/json"});
+}
+document.getElementById("btnExportFile").addEventListener("click",()=>{
+  triggerDownload(exportStateBlob(), "monitorplus_backup_"+dateStamp()+".json");
+  showToast("Backup exportado");
+});
+document.getElementById("btnExportDevice").addEventListener("click",()=>{
+  triggerDownload(exportStateBlob(), "monitorplus_backup_"+dateStamp()+".json");
+  showToast("Backup salvo no dispositivo");
+});
+
+function mergeImportedState(imported){
+  if(!imported || typeof imported!=="object") return;
+  // merge responses por id (evita duplicar)
+  const existingIds = new Set(state.responses.map(r=>r.id));
+  (imported.responses||[]).forEach(r=>{
+    if(!existingIds.has(r.id)){ state.responses.push(r); existingIds.add(r.id); }
+  });
+  // merge actions por id
+  const existingActionIds = new Set(state.actions.map(a=>a.id));
+  (imported.actions||[]).forEach(a=>{
+    if(!existingActionIds.has(a.id)) state.actions.push(a);
+  });
+  // merge devolutivas por id
+  const existingDevIds = new Set(state.devolutivas.map(d=>d.id));
+  (imported.devolutivas||[]).forEach(d=>{
+    if(!existingDevIds.has(d.id)) state.devolutivas.push(d);
+  });
+  // merge tags de tema
+  Object.assign(state.themeTags, imported.themeTags||{});
+
+  // merge do banco de perguntas: pergunta com mesmo id é atualizada (texto/opções/etc.),
+  // pergunta nova (id não existe localmente) é adicionada. Nada é apagado por importar.
+  let questionsChanged = false;
+  if(imported.config && Array.isArray(imported.config.questions)){
+    imported.config.questions.forEach(iq=>{
+      const local = state.config.questions.find(q=>q.id===iq.id);
+      if(local){
+        const localStr = JSON.stringify(local);
+        const importedStr = JSON.stringify(Object.assign({}, local, iq));
+        if(localStr !== importedStr){
+          Object.assign(local, iq);
+          questionsChanged = true;
+        }
+      } else {
+        state.config.questions.push(iq);
+        questionsChanged = true;
+      }
+    });
+    state.config.questions.sort((a,b)=>a.order-b.order).forEach((q,i)=>q.order=i+1);
+  }
+
+  saveState();
+  return { questionsChanged };
+}
+
+function handleImportFile(file){
+  const reader = new FileReader();
+  reader.onload = (e)=>{
+    try{
+      const imported = JSON.parse(e.target.result);
+      const result = mergeImportedState(imported);
+      renderHome(); renderDashboard(); renderAdmin();
+      const msg = (result && result.questionsChanged)
+        ? "Dados e perguntas atualizados às "+new Date().toLocaleTimeString("pt-BR")
+        : "Dados atualizados e mesclados às "+new Date().toLocaleTimeString("pt-BR");
+      showToast(msg);
+    }catch(err){
+      console.error(err);
+      showToast("Arquivo inválido");
+    }
+  };
+  reader.readAsText(file);
+}
+
+document.getElementById("btnImportJson").addEventListener("click",()=>{
+  document.getElementById("fileImportJson").click();
+});
+document.getElementById("fileImportJson").addEventListener("change",(e)=>{
+  const file = e.target.files[0];
+  if(file) handleImportFile(file);
+  e.target.value = "";
+});
+document.getElementById("btnRestoreFile").addEventListener("click",()=>{
+  document.getElementById("backupModal").classList.add("hidden");
+  document.getElementById("fileImportJson").click();
+});
+document.getElementById("btnRestoreDevice").addEventListener("click",()=>{
+  document.getElementById("backupModal").classList.add("hidden");
+  document.getElementById("fileImportJson").click();
+});
+
+/* =========================================================
+   INICIALIZAÇÃO
+========================================================= */
+renderHome();
+renderDashboard();
+renderAdmin();
+updateBottomActionsVisibility();
+
+})();
+</script>
+</body>
+</html>
