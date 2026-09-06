@@ -457,17 +457,17 @@ function defaultQuestions(){
     {
       id:"q2", order:2, type:"multi", required:true, allowOther:true, maxSelections:3,
       text:"Quais assuntos você gostaria de aprender ou aprofundar para melhorar sua atuação como Monitor?",
-      options:["Liderança","Comunicação","Gestão de conflitos","Gestão de pessoas","Gestão de indicadores","Qualidade","Segurança","Solução de problemas","Ferramentas da qualidade","IA","Digitalização","Processos produtivos","Gestão do tempo","Organização","Tomada de decisão","Desenvolvimento de operadores","Conhecimento técnico","Conhecimento sobre a Volkswagen"]
+      options:["Liderança","Comunicação","Gestão de conflitos","Gestão de pessoas","Gestão de indicadores","Qualidade","Solução de problemas","Ferramentas da qualidade","IA","Processos produtivos","Gestão do tempo","Organização","Tomada de decisão","Desenvolvimento de operadores","Conhecimento técnico","Conhecimento sobre a Volkswagen","Outros"]
     },
     {
-      id:"q3", order:3, type:"single", required:true, allowOther:true,
+      id:"q3", order:3, type:"multi", required:true, allowOther:true, maxSelections:3,
       text:"Qual tipo de desenvolvimento seria mais útil para você?",
-      options:["Treinamento prático","Treinamento teórico","Workshop","Palestra","Conversa com a Supervisão","Troca de experiências entre Monitores","Visita a outros setores","Acompanhamento individual","Estudo de casos reais","Quiz","Material digital","Vídeos curtos"]
+      options:["Treinamento prático","Treinamento teórico","Workshop","Palestra","Troca de experiências entre Monitores","Visita a outros setores","Acompanhamento individual","Estudo de casos reais","Quiz","Material digital","Vídeos curtos","conversa com líderes/supervisores","Outros"]
     },
     {
       id:"q4", order:4, type:"single", required:true, allowOther:true,
-      text:"Qual formato de comunicação entre Monitores e Supervisão você considera mais eficiente?",
-      options:["Reunião presencial","Conversa individual","Reunião rápida antes do turno","Reunião mensal","Formulário digital","Grupo de comunicação","Aplicativo","Quadro digital","Encontros para troca de experiências"]
+      text:"Qual formato de comunicação entre monitores e supervisão você considera mais eficiente?",
+      options:["Conversa individual","Reunião mensal","Grupo de comunicação","outros"]
     },
     {
       id:"q5", order:5, type:"open", required:true, allowOther:false,
@@ -477,7 +477,7 @@ function defaultQuestions(){
     {
       id:"q7", order:6, type:"single", required:true, allowOther:true,
       text:"Na sua opinião, qual competência é mais importante para um Monitor do futuro?",
-      options:["Liderança","Comunicação","Conhecimento técnico","Inteligência emocional","Capacidade de ensinar","Tomada de decisão","Tecnologia","Inteligência Artificial","Solução de problemas","Visão de processo","Trabalho em equipe","Gestão de pessoas"]
+      options:["Liderança","Comunicação","Conhecimento técnico","Inteligência emocional","Capacidade de ensinar","Tomada de decisão","Tecnologia","Inteligência Artificial","Solução de problemas","Visão de processo","Trabalho em equipe","Gestão de pessoas","Outros"]
     },
     {
       id:"q8", order:7, type:"open", required:true, allowOther:false,
@@ -486,53 +486,38 @@ function defaultQuestions(){
     },
     {
       id:"q9", order:8, type:"open", required:true, allowOther:false,
-      text:"Qual assunto você gostaria de levar para a próxima conversa entre Monitores e Supervisão?",
+      text:"Qual assunto você gostaria que fosse abordado nas próximas reuniões com a  Supervisão?",
       placeholder:"Escreva um tema que você gostaria que fosse discutido na próxima reunião."
     },
     {
-      id:"q10", order:9, type:"single", required:true, allowOther:true,
-      text:"Se você pudesse escolher um treinamento para os Monitores, qual seria?",
-      options:["Liderança","Comunicação","Gestão de pessoas","Gestão de conflitos","Qualidade","Segurança","Solução de problemas","IA","Tecnologia","Processos","Indicadores","Desenvolvimento de operadores","Gestão do tempo"]
-    },
-    {
-      id:"q_mtk92z343r38gq", order:10, type:"scale", required:true, allowOther:false,
-      text:"Você sente abertura para apresentar problemas, dúvidas e opiniões?",
-      options:["1","2","3","4","5"]
-    },
-    {
-      id:"q_mtk93u1uu8qffv", order:11, type:"scale", required:true, allowOther:false,
-      text:"Como você avalia a comunicação entre monitores e supervisão?",
-      options:["1","2","3","4","5"]
-    },
-    {
-      id:"q_mtljjh2ef4nymj", order:12, type:"multi", required:true, allowOther:true, maxSelections:3,
-      text:"Qual tecnologia ou conhecimento você gostaria de aprender para se preparar para o futuro?",
-      options:["IA","Sistema volkswagen","Tecnologia de Produção","Ferramentas Digitais","Outros"]
-    },
-    {
-      id:"q_mtljz0bkte1w9t", order:13, type:"open", required:true, allowOther:false,
+      id:"q_mtljz0bkte1w9t", order:9, type:"open", required:true, allowOther:false,
       text:"Qual foi o momento mais marcante positivamente da sua trajetória como Monitor, e o que esse momento ensinou a você?",
       placeholder:"Escreva sua resposta..."
     },
     {
-      id:"q_mtlkgqu6aeyqkq", order:14, type:"open", required:true, allowOther:false,
-      text:"Existe alguma função dentro da Volkswagen que você admira e gostaria de exercer um dia? Qual?",
+      id:"q_mtlkgqu6aeyqkq", order:10, type:"open", required:true, allowOther:false,
+      text:"Pensando no seu futuro profissional, em que direção você gostaria de desenvolver sua carreira nos próximos anos? Explique onde quero chegar?\" O que preciso desenvolver? E como minha liderança pode apoiar meu desenvolvimento?",
       placeholder:"Escreva sua resposta..."
     },
     {
-      id:"q_mtlkj0tij8m92d", order:15, type:"open", required:true, allowOther:false,
-      text:"Quem são os profissionais que você considera referência e que gostaria de se inspirar? O que admira neles?",
+      id:"q_mtlkj0tij8m92d", order:11, type:"open", required:false, allowOther:false,
+      text:"Quem são os profissionais que você considera referência e que gostaria de se inspirar, na Volkswagen? O que admira neles?",
       placeholder:"Escreva sua resposta..."
     },
     {
-      id:"q_mtlklneiwkc73x", order:16, type:"open", required:true, allowOther:false,
+      id:"q_mtlklneiwkc73x", order:12, type:"open", required:true, allowOther:false,
       text:"Se tivesse a oportunidade de participar de um treinamento hoje, qual tema escolheria para ajudar na sua carreira?",
       placeholder:"Escreva sua resposta..."
     },
     {
-      id:"q_mtkcg1tl07kyq8", order:17, type:"open", required:true, allowOther:false,
+      id:"q_mtkcg1tl07kyq8", order:13, type:"open", required:false, allowOther:false,
       text:"Se você tivesse 5 minutos com a supervisora, o que você gostaria de conversar com ela?",
       placeholder:"Escreva sua resposta..."
+    },
+    {
+      id:"q_mtqd6k51ent5wb", order:14, type:"single", required:true, allowOther:true,
+      text:"Vamos pensar 2027, Oque deveríamos:\n- Continuar fazendo\n- Parar de fazer\n- Experimentar e começar a fazer",
+      options:[]
     }
   ];
 }
